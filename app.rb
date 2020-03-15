@@ -15,8 +15,7 @@ class Station
   end
 
   def trains_number_by_type(type)
-    @trains.select { |train| train.type == type }
-      .length
+    @trains.count { |train| train.type == type }
   end
 
   def send_train(train)
