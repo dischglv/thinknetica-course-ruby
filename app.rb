@@ -58,7 +58,6 @@ class Route
 end
 
 class Train
-  attr_accessor :speed
   attr_reader :length, :number, :type
 
   # possible types - 'passenger', 'cargo'
@@ -69,38 +68,42 @@ class Train
     @speed = 0
   end
 
-  def stop
-    self.speed = 0
+  def increase_speed(value)
+    @speed += value
+  end
+
+  def decrease_speed(value)
+    (@speed - value) > 0 ? @speed -= value : @speed = 0
   end
 
   def hitch_wagon
-    @length += 1 if self.speed == 0
+    @length += 1 if @speed == 0
   end
 
   def uncouple_wagon
-    @length -= 1 if self.speed == 0 && @length > 0
+    @length -= 1 if @speed == 0 && @length > 0
   end
 
   def take_route(route)
-    @route.at(@current_station_number).send_train(self) if !(@route.nil?)
+    current_station.send_train(self) if !(@route.nil?)
     @route = route
     @current_station_number = 0
-    @route.at(@current_station_number).accept_train(self)
+    current_station.accept_train(self)
   end
 
   def move_on
-    if @current_station_number < @route.length
-      @route.at(@current_station_number).send_train(self)
+    if next_station
+      current_station.send_train(self)
+      next_station.accept_train(self)
       @current_station_number += 1
-      @route.at(@current_station_number).accept_train(self)
     end
   end
 
   def move_back
-    if @current_station_number > 0
-      @route.at(@current_station_number).send_train(self)
+    if previous_station
+      current_station.send_train(self)
+      previous_station.accept_train(self)
       @current_station_number -= 1
-      @route.at(@current_station_number).accept_train(self)
     end
   end
 
@@ -109,10 +112,10 @@ class Train
   end
 
   def previous_station
-    @route.at(@current_station_number - 1) if @current_station_number > 0
+    @route.at(@current_station_number - 1) if current_station != @route.first_station
   end
 
   def next_station
-    @route.at(@current_station_number + 1) if @current_station_number < (@route.length - 1)
+    @route.at(@current_station_number + 1) if current_station != @route.last_station
   end
 end
