@@ -25,9 +25,7 @@ end
 
 class Route
   def initialize(start_station, end_station)
-    @stations = []
-    @stations << start_station
-    @stations << end_station
+    @stations = [start_station, end_station]
   end
 
   def add_station(station)
@@ -48,6 +46,14 @@ class Route
 
   def length
     @stations.length
+  end
+
+  def first_station
+    @stations[0]
+  end
+
+  def last_station
+    @stations[-1]
   end
 end
 
