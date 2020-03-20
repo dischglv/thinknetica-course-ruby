@@ -4,30 +4,35 @@ class Route
   end
 
   def add_station(station)
-    @stations.insert(-2, station)
+    self.stations.insert(-2, station)
   end
 
   def delete_station(station)
-    @stations.delete(station)
+    self.stations.delete(station)
   end
 
   def show_stations
-    @stations.each { |station| puts station.name }
+    self.stations.each { |station| puts station.name }
   end
 
   def at(number)
-    @stations[number]
+    self.stations[number]
   end
 
   def length
-    @stations.length
+    self.stations.length
   end
 
   def first_station
-    @stations[0]
+    self.stations[0]
   end
 
   def last_station
-    @stations[-1]
+    self.stations[-1]
   end
+
+  private
+  # геттер и сеттер для массива станций, доступ к массиву возможен только из методов класса
+  # private - т.к. у класса нет подклассов
+  attr_accessor :stations
 end
