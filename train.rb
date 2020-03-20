@@ -2,9 +2,8 @@ class Train
   attr_reader :length, :number, :type
 
   # possible types - 'passenger', 'cargo'
-  def initialize(number, type)
+  def initialize(number)
     @number = number
-    @type = type
     @speed = 0
     @wagons = []
   end
