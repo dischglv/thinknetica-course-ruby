@@ -1,5 +1,5 @@
 class Train
-  attr_reader :length, :number, :type
+  attr_reader :length, :number, :type, :wagons
 
   # possible types - 'passenger', 'cargo'
   def initialize(number)
@@ -60,7 +60,9 @@ class Train
   end
 
   protected
-  attr_accessor :speed, :route, :wagons, :current_station_number
+  
+  attr_accessor :speed, :route, :current_station_number
+  attr_writer :wagons
 
   def train_stopped?
     self.speed.zero?

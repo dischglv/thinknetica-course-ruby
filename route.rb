@@ -1,4 +1,6 @@
 class Route
+  attr_reader :stations
+
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
   end
@@ -31,8 +33,7 @@ class Route
     self.stations[-1]
   end
 
-  private
-  # геттер и сеттер для массива станций, доступ к массиву возможен только из методов класса
-  # private - т.к. у класса нет подклассов
-  attr_accessor :stations
+  protected
+  # изменение станций должно быть доступно только изнутри массива
+  attr_writer :stations
 end
