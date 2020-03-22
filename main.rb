@@ -5,3 +5,5 @@ require_relative 'cargo_wagon.rb'
 require_relative 'route.rb'
 require_relative 'station.rb'
 require_relative 'menu.rb'
+
+Menu.new.show_options
