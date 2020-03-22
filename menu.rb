@@ -116,7 +116,7 @@ class Menu
   def create_route
     puts ''
     if self.stations.empty?
-      puts 'Добавьте хотя бы 1 станцию для создания маршрута'
+      puts 'Добавьте хотя бы одну станцию для создания маршрута'
       return
     end
     puts 'Выберите начальную станцию маршрута'
