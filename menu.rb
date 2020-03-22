@@ -115,6 +115,10 @@ class Menu
 
   def create_route
     puts ''
+    if self.stations.empty?
+      puts 'Добавьте хотя бы 1 станцию для создания маршрута'
+      return
+    end
     puts 'Выберите начальную станцию маршрута'
     first_station = choose_station
     puts 'Выберите конечную станцию маршрута'
@@ -125,6 +129,10 @@ class Menu
 
   def add_station_to_route
     puts ''
+    if self.route.empty?
+      puts 'Нет маршрута для изменения'
+      return
+    end
     puts 'Выберите маршрут, к которому хотите добавить станцию'
     route = choose_route
     puts 'Выберите станцию, которую хотите добавить к маршруту'
@@ -134,6 +142,10 @@ class Menu
 
   def delete_station_from_route
     puts ''
+    if self.routes.empty?
+      puts 'Нет маршрута для изменения'
+      return
+    end
     puts 'Выберите маршрут, который хотите изменить'
     route = choose_route
     puts 'Выберите станцию, которую хотите удалить'
@@ -143,6 +155,10 @@ class Menu
 
   def assign_route_to_train
     puts ''
+    if self.trains.empty? || self.routes.empty?
+      puts 'Создайте поезд и маршрут'
+      return
+    end
     puts 'Выберите поезд'
     train = choose_train
     puts 'Выберите маршрут, который хотите назначить поезду'
@@ -152,6 +168,10 @@ class Menu
 
   def hitch_wagon_to_train
     puts ''
+    if self.trains.empty?
+      puts 'Создайте поезд для изменения'
+      return
+    end
     puts 'Выберите поезд'
     train = choose_train
     wagon = train.class == 'PassengerTrain' ? PassengerWagon.new : CargoWagon.new
@@ -160,6 +180,10 @@ class Menu
 
   def uncouple_wagon_from_train
     puts ''
+    if self.trains.empty?
+      puts 'Создайте поезд для изменения'
+      return
+    end
     puts 'Выберите поезд'
     train = choose_train
     puts 'Выберите вагон, который хотите отцепить'
@@ -169,6 +193,10 @@ class Menu
 
   def move_train
     puts ''
+    if self.trains.empty?
+      puts 'Создайте поезд для изменения'
+      return
+    end
     puts 'Выберите поезд'
     train = choose_train
     puts 'Введите 1 чтобы переместить поезд на станцию вперед'
@@ -183,13 +211,22 @@ class Menu
 
   def show_stations
     puts ''
+    puts 'Не создано ни одной станции' if self.stations.empty?
     self.stations.each { |station| puts station.name }
   end
 
   def show_trains_at_station
     puts ''
+    if self.stations.empty?
+      puts 'Не создано ни одной станции'
+      return
+    end
     puts 'Выберите станцию'
     station = choose_station
+    if station.trains.empty?
+      puts 'На станции нет поездов'
+      return
+    end
     station.trains_by_type(PassengerTrain).each do |train|
       puts "Пассажирский поезд номер #{train.number}"
     end
@@ -207,7 +244,7 @@ class Menu
   end
 
   def choose_train
-    choose_from_array(self.traines, 'Поезд')
+    choose_from_array(self.trains, 'Поезд')
   end
 
   def choose_from_array(array, item_name)
