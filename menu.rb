@@ -129,7 +129,7 @@ class Menu
 
   def add_station_to_route
     puts ''
-    if self.route.empty?
+    if self.routes.empty?
       puts 'Нет маршрута для изменения'
       return
     end
