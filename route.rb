@@ -10,7 +10,11 @@ class Route
   end
 
   def delete_station(station)
+    first = first_station
+    last = last_station
     self.stations.delete(station)
+    self.stations[0] = first
+    self.stations[-1] = last
   end
 
   def show_stations
