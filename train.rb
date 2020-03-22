@@ -47,6 +47,14 @@ class Train
     end
   end
 
+  protected
+  # вынесли в protected (так как есть подклассы) все, что не входит в интерфейс класса
+  # скорость, маршрут, текущий номер станции - внутренние переменные
+  # вагоны доступны снаружи на чтение (используется в menu)
+  attr_accessor :speed, :route, :current_station_number
+  attr_writer :wagons
+
+  # следующие методы используются только внутри класса
   def current_station
     self.route.at(self.current_station_number)
   end
@@ -59,15 +67,11 @@ class Train
     self.route.at(self.current_station_number + 1) if current_station != self.route.last_station
   end
 
-  protected
-  
-  attr_accessor :speed, :route, :current_station_number
-  attr_writer :wagons
-
   def train_stopped?
     self.speed.zero?
   end
 
+  # снаружи доступно только увеличение/уменьшение скорости, внутренний метод
   def stop
     self.speed = 0
   end
