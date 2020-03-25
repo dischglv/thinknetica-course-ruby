@@ -13,6 +13,7 @@ class Menu
       puts 'Введите 1 чтобы создать объект (станцию, поезд или маршрут)'
       puts 'Введите 2 чтобы изменить объект'
       puts 'Введите 3 чтобы посмотреть все все станции или все поезда на станции'
+      puts 'Введите 4 чтобы запустить seed метод'
       puts 'Введите 0 чтобы выйти'
       answer = gets.chomp
       case answer
@@ -22,10 +23,28 @@ class Menu
         show_manage_options
       when '3'
         show_listing_options
+      when '4'
+        seed
       when '0'
         break
       end
     end
+  end
+
+  def seed
+    self.stations << Station.new('Москва Октябрьская')
+    self.stations << Station.new('Тверь')
+    self.stations << Station.new('Бологое - Московское')
+    self.stations << Station.new('Санкт-Петербург - Главн.')
+    self.routes << Route.new(stations[0], stations[-1])
+
+    train1 = PassengerTrain.new('754А')
+    train1.take_route(routes[0])
+    self.trains << train1
+
+    train2 = CargoTrain.new('755А')
+    train2.take_route(routes[0])
+    self.trains << train2
   end
 
   protected
@@ -99,7 +118,7 @@ class Menu
   def create_train
     puts ''
     puts 'Введите номер поезда'
-    number = gets.chomp.to_i
+    number = gets.chomp
     puts 'Введите 1 чтобы создать пассажирский поезд'
     puts 'Введите 2 чтобы создать грузовой поезд'
     case gets.chomp
