@@ -15,6 +15,7 @@ class Train
     @number = number
     @speed = 0
     @wagons = []
+    @@trains[number] = self
     register_instance
   end
 
