@@ -1,11 +1,22 @@
 class Train
+  include Manufactured
+  include InstanceCounter
+
+  @@trains = {}
+
   attr_reader :length, :number, :type, :wagons
+
+  def self.find(number)
+    @@trains[number]
+  end
 
   # possible types - 'passenger', 'cargo'
   def initialize(number)
     @number = number
     @speed = 0
     @wagons = []
+    @@trains[number] = self
+    register_instance
   end
 
   def increase_speed(value)
