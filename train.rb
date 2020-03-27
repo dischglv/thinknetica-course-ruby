@@ -12,11 +12,21 @@ class Train
 
   # possible types - 'passenger', 'cargo'
   def initialize(number)
-    @number = number
+    @number = number.to_s
     @speed = 0
     @wagons = []
     @@trains[number] = self
     register_instance
+    raise "Объект невалидный" if !(valid?)
+  end
+
+  def valid_number?
+    return true if (self.number =~ /^([a-zа-я]|\d){3}-?([a-zа-я]|\d){2}$/i) == 0
+    false
+  end
+
+  def valid?
+    return valid_number?
   end
 
   def increase_speed(value)
