@@ -38,11 +38,11 @@ class Menu
     self.stations << Station.new('Санкт-Петербург - Главн.')
     self.routes << Route.new(stations[0], stations[-1])
 
-    train1 = PassengerTrain.new('754А')
+    train1 = PassengerTrain.new('754-3А')
     train1.take_route(routes[0])
     self.trains << train1
 
-    train2 = CargoTrain.new('755А')
+    train2 = CargoTrain.new('755РА')
     train2.take_route(routes[0])
     self.trains << train2
   end
@@ -124,8 +124,10 @@ class Menu
     case gets.chomp
     when '1'
       train = PassengerTrain.new(number)
+      puts "Создан пассажирский поезд номер #{number}"
     when '2'
       train = CargoTrain.new(number)
+      puts "Создан грузовой поезд номер #{number}"
     else
       return
     end
