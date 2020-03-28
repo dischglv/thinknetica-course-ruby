@@ -6,11 +6,11 @@ class Route
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
     register_instance
-    raise "Объект невалидный" if !valid?
+    raise "Объект невалидный" unless valid?
   end
 
   def valid?
-    self.stations.each { |station| return false if !(station.is_a? Station) }
+    self.stations.each { |station| return false unless station.is_a? Station }
     true
   end
 
