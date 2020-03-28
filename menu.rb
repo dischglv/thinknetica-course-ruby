@@ -130,6 +130,10 @@ class Menu
       return
     end
     self.trains.push(train)
+    rescue RuntimeError => e
+      raise unless e.message == "Объект невалидный"
+      print "Номер введен в неправильном формате. Попробовать еще раз? (да/нет) "
+      retry if gets.chomp == "да"
   end
 
   def create_route
