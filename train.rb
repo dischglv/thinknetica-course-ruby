@@ -1,6 +1,7 @@
 class Train
   include Manufactured
   include InstanceCounter
+  INITIAL_SPEED = 0
 
   @@trains = {}
 
@@ -10,14 +11,13 @@ class Train
     @@trains[number]
   end
 
-  # possible types - 'passenger', 'cargo'
   def initialize(number)
     @number = number.to_s
-    @speed = 0
+    @speed = INITIAL_SPEED
     @wagons = []
     @@trains[number] = self
     register_instance
-    raise "Объект невалидный" if !(valid?)
+    raise "Объект невалидный" unless valid?
   end
 
   def valid_number?
@@ -38,15 +38,18 @@ class Train
   end
 
   def hitch_wagon(wagon)
+    raise "Аргумент должен принадлежать классу Wagon или одному из его подклассов" unless wagon.is_a? Wagon
     self.wagons.push(wagon) if train_stopped? && !self.wagons.include?(wagon)
   end
 
   def uncouple_wagon(wagon)
+    raise "Аргумент должен принадлежать классу Wagon или одному из его подклассов" unless wagon.is_a? Wagon
     self.wagons.delete(wagon) if train_stopped? && self.wagons.include?(wagon)
   end
 
   def take_route(route)
-    current_station.send_train(self) if !(self.route.nil?)
+    raise "Аргумент должен принадлежать классу Route" unless route.is_a? Route
+    current_station.send_train(self) unless self.route.nil?
     self.route = route
     self.current_station_number = 0
     current_station.accept_train(self)
@@ -81,11 +84,11 @@ class Train
   end
 
   def previous_station
-    self.route.at(self.current_station_number - 1) if current_station != self.route.first_station
+    self.route.at(self.current_station_number - 1) unless current_station == self.route.first_station
   end
 
   def next_station
-    self.route.at(self.current_station_number + 1) if current_station != self.route.last_station
+    self.route.at(self.current_station_number + 1) unless current_station == self.route.last_station
   end
 
   def train_stopped?
