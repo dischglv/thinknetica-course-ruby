@@ -13,7 +13,7 @@ class Station
     @trains = []
     @@stations << self
     register_instance
-    raise "Объект невалидный" if !valid?
+    raise "Объект невалидный" unless valid?
   end
 
   def valid?
@@ -22,22 +22,22 @@ class Station
   end
 
   def accept_train(train)
-    raise "Аргумент должен быть принадлежать классу Train или одному из его подклассов" if !(train.is_a? Train)
+    raise "Аргумент должен быть принадлежать классу Train или одному из его подклассов" unless train.is_a? Train
     self.trains << train
   end
 
   def send_train(train)
-    raise "Аргумент должен быть принадлежать классу Train или одному из его подклассов" if !(train.is_a? Train)
+    raise "Аргумент должен быть принадлежать классу Train или одному из его подклассов" unless train.is_a? Train
     self.trains.delete(train)
   end
 
   def trains_by_type(type)
-    raise "Типом может быть 'PassengerTrain' или 'CargoTrain'" if type != PassengerTrain or type != CargoTrain
+    raise "Типом может быть 'PassengerTrain' или 'CargoTrain'" unless type == PassengerTrain || type == CargoTrain
     self.trains.select { |train| train.class == type }
   end
 
   def trains_number_by_type(type)
-    raise "Типом может быть 'PassengerTrain' или 'CargoTrain'" if type != PassengerTrain or type != CargoTrain
+    raise "Типом может быть 'PassengerTrain' или 'CargoTrain'" unless type == PassengerTrain || type == CargoTrain
     self.trains.count { |train| train.class == type }
   end
 
