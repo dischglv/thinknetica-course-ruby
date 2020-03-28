@@ -32,12 +32,12 @@ class Station
   end
 
   def trains_by_type(type)
-    raise "Аргументом может быть 'PassengerTrain' или 'CargoTrain'" if type != PassengerTrain or type != CargoTrain
+    raise "Типом может быть 'PassengerTrain' или 'CargoTrain'" if type != PassengerTrain or type != CargoTrain
     self.trains.select { |train| train.class == type }
   end
 
   def trains_number_by_type(type)
-    raise "Аргументом может быть 'PassengerTrain' или 'CargoTrain'" if type != PassengerTrain or type != CargoTrain
+    raise "Типом может быть 'PassengerTrain' или 'CargoTrain'" if type != PassengerTrain or type != CargoTrain
     self.trains.count { |train| train.class == type }
   end
 
