@@ -133,7 +133,7 @@ class Menu
     end
     self.trains.push(train)
     rescue RuntimeError => e
-      raise unless e.message == "Объект невалидный"
+      raise unless e.message == "Невалидный формат номера"
       print "Номер введен в неправильном формате. Попробовать еще раз? (да/нет) "
       retry if gets.chomp == "да"
   end

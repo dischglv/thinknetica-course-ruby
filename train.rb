@@ -2,6 +2,7 @@ class Train
   include Manufactured
   include InstanceCounter
   INITIAL_SPEED = 0
+  NUMBER_FORMAT = /^([a-zа-я]|\d){3}-?([a-zа-я]|\d){2}$/i
 
   @@trains = {}
 
@@ -15,18 +16,16 @@ class Train
     @number = number.to_s
     @speed = INITIAL_SPEED
     @wagons = []
+    validate!
     @@trains[number] = self
     register_instance
-    raise "Объект невалидный" unless valid?
-  end
-
-  def valid_number?
-    return true if (self.number =~ /^([a-zа-я]|\d){3}-?([a-zа-я]|\d){2}$/i) == 0
-    false
   end
 
   def valid?
-    return valid_number?
+    validate!
+    true
+  rescue
+    false
   end
 
   def increase_speed(value)
@@ -38,17 +37,14 @@ class Train
   end
 
   def hitch_wagon(wagon)
-    raise "Аргумент должен принадлежать классу Wagon или одному из его подклассов" unless wagon.is_a? Wagon
     self.wagons.push(wagon) if train_stopped? && !self.wagons.include?(wagon)
   end
 
   def uncouple_wagon(wagon)
-    raise "Аргумент должен принадлежать классу Wagon или одному из его подклассов" unless wagon.is_a? Wagon
     self.wagons.delete(wagon) if train_stopped? && self.wagons.include?(wagon)
   end
 
   def take_route(route)
-    raise "Аргумент должен принадлежать классу Route" unless route.is_a? Route
     current_station.send_train(self) unless self.route.nil?
     self.route = route
     self.current_station_number = 0
@@ -95,8 +91,11 @@ class Train
     self.speed.zero?
   end
 
-  # снаружи доступно только увеличение/уменьшение скорости, внутренний метод
   def stop
     self.speed = 0
+  end
+
+  def validate!
+    raise "Невалидный формат номера" if number !~ NUMBER_FORMAT
   end
 end

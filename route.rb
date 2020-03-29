@@ -5,13 +5,15 @@ class Route
 
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
+    validate!
     register_instance
-    raise "Объект невалидный" unless valid?
   end
 
   def valid?
-    self.stations.each { |station| return false unless station.is_a? Station }
+    validate!
     true
+  rescue
+    false
   end
 
   def add_station(station)
@@ -50,4 +52,11 @@ class Route
   # изменение массива станций должно быть доступно только изнутри класса
   # для изменения массива станций извне существуют отдельные методы из интерфейса класса
   attr_writer :stations
+
+  def validate!
+    self.stations.each do |station|
+      raise "Cтанции должны быть объектом класса Station" unless station.is_a? Station
+    end
+    raise "Конечная и начальная станция не могут совпадать" if first_station == last_station
+  end
 end
