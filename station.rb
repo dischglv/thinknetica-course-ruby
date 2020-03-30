@@ -1,5 +1,6 @@
 class Station
   include InstanceCounter
+  include Validation
 
   attr_reader :name, :trains
   @@stations = []
@@ -14,13 +15,6 @@ class Station
     validate!
     @@stations << self
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
   end
 
   def accept_train(train)

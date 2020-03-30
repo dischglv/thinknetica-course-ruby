@@ -1,6 +1,7 @@
 class Train
   include Manufactured
   include InstanceCounter
+  include Validation
   INITIAL_SPEED = 0
   NUMBER_FORMAT = /^([a-zа-я]|\d){3}-?([a-zа-я]|\d){2}$/i
 
@@ -19,13 +20,6 @@ class Train
     validate!
     @@trains[number] = self
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
   end
 
   def increase_speed(value)
