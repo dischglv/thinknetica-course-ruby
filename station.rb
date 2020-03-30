@@ -1,5 +1,6 @@
 class Station
   include InstanceCounter
+  include Validation
 
   attr_reader :name, :trains
   @@stations = []
@@ -9,8 +10,9 @@ class Station
   end
 
   def initialize(name)
-    @name = name
+    @name = name.to_s
     @trains = []
+    validate!
     @@stations << self
     register_instance
   end
@@ -36,4 +38,7 @@ class Station
   # для добавления/удаления поездов на станцию существуют отдельные методы 
   attr_writer :trains
 
+  def validate!
+    raise "Имя не может быть пустым" if self.name == ""
+  end
 end

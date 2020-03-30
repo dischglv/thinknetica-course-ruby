@@ -1,6 +1,9 @@
 class Train
   include Manufactured
   include InstanceCounter
+  include Validation
+  INITIAL_SPEED = 0
+  NUMBER_FORMAT = /^([a-zа-я]|\d){3}-?([a-zа-я]|\d){2}$/i
 
   @@trains = {}
 
@@ -10,11 +13,11 @@ class Train
     @@trains[number]
   end
 
-  # possible types - 'passenger', 'cargo'
   def initialize(number)
-    @number = number
-    @speed = 0
+    @number = number.to_s
+    @speed = INITIAL_SPEED
     @wagons = []
+    validate!
     @@trains[number] = self
     register_instance
   end
@@ -36,7 +39,7 @@ class Train
   end
 
   def take_route(route)
-    current_station.send_train(self) if !(self.route.nil?)
+    current_station.send_train(self) unless self.route.nil?
     self.route = route
     self.current_station_number = 0
     current_station.accept_train(self)
@@ -71,19 +74,22 @@ class Train
   end
 
   def previous_station
-    self.route.at(self.current_station_number - 1) if current_station != self.route.first_station
+    self.route.at(self.current_station_number - 1) unless current_station == self.route.first_station
   end
 
   def next_station
-    self.route.at(self.current_station_number + 1) if current_station != self.route.last_station
+    self.route.at(self.current_station_number + 1) unless current_station == self.route.last_station
   end
 
   def train_stopped?
     self.speed.zero?
   end
 
-  # снаружи доступно только увеличение/уменьшение скорости, внутренний метод
   def stop
     self.speed = 0
+  end
+
+  def validate!
+    raise "Невалидный формат номера" if number !~ NUMBER_FORMAT
   end
 end
