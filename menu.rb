@@ -12,7 +12,7 @@ class Menu
       puts ''
       puts 'Введите 1 чтобы создать объект (станцию, поезд или маршрут)'
       puts 'Введите 2 чтобы изменить объект'
-      puts 'Введите 3 чтобы посмотреть все все станции или все поезда на станции'
+      puts 'Введите 3 чтобы посмотреть все станции или все поезда на станции'
       puts 'Введите 4 чтобы запустить seed метод'
       puts 'Введите 0 чтобы выйти'
       answer = gets.chomp
@@ -361,6 +361,7 @@ class Menu
     end
     station.each_train do |train|
       type = train.class == PassengerTrain ? 'пассажирский' : 'грузовой'
+      puts ''
       puts "Номер: #{train.number}, тип: #{type}, количество вагонов: #{train.wagons.length}"
       show_train_wagons(train)
     end
@@ -377,7 +378,6 @@ class Menu
   end
 
   def show_train_wagons(train)
-    puts ''
     if train.wagons.empty?
       puts 'Поезд без вагонов'
       return
@@ -410,7 +410,7 @@ class Menu
   def choose_from_array(array, item_name)
     index = 0
     array.each do |item|
-      puts "#{item_name} #{index + 1}: #{array[index].inspect}"
+      puts "#{item_name} #{index + 1}: #{array[index].to_s}"
       index += 1
     end
     array[gets.chomp.to_i - 1]
