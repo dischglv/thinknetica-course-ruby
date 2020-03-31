@@ -45,6 +45,18 @@ class Menu
     train2 = CargoTrain.new('755РА')
     train2.take_route(routes[0])
     self.trains << train2
+
+    10.times do
+      number = rand(100)
+      seats = rand(120)
+      wagon = PassengerWagon.new(number, seats)
+      train1.hitch_wagon(wagon)
+
+      number = rand(100)
+      volume = rand(1200)
+      wagon = CargoWagon.new(number, volume)
+      train2.hitch_wagon(wagon)
+    end
   end
 
   protected
