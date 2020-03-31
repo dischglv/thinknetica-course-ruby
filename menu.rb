@@ -50,6 +50,14 @@ class Menu
   protected
   attr_accessor :stations, :routes, :trains
 
+  def passenger_trains
+    self.trains.select { |train| train.class == PassengerTrain }
+  end
+
+  def cargo_trains
+    self.trains.select { |train| train.class == CargoTrain }
+  end
+
   private
   def show_create_options
     puts ''
@@ -98,11 +106,14 @@ class Menu
     puts ''
     puts 'Введите 1 чтобы вывести список всех станций'
     puts 'Введите 2 чтобы вывести список всех поездов на станции'
+    puts 'Введите 3 чтобы вывести список всех вагонов поезда'
     case gets.chomp
     when '1'
       show_stations
     when '2'
       show_trains_at_station
+    when '3'
+      show_wagons
     else 
       return
     end
@@ -112,7 +123,9 @@ class Menu
     puts ''
     puts 'Введите название станции'
     name = gets.chomp
-    self.stations.push(Station.new(name))
+    station = Station.new(name)
+    self.stations.push(station)
+    station
   end
 
   def create_train
@@ -132,10 +145,11 @@ class Menu
       return
     end
     self.trains.push(train)
-    rescue RuntimeError => e
-      raise unless e.message == "Невалидный формат номера"
-      print "Номер введен в неправильном формате. Попробовать еще раз? (да/нет) "
-      retry if gets.chomp == "да"
+    train
+  rescue RuntimeError => e
+    raise unless e.message == 'Невалидный формат номера'
+    print 'Номер введен в неправильном формате. Попробовать еще раз? (да/нет) '
+    retry if gets.chomp == 'да'
   end
 
   def create_route
@@ -150,6 +164,35 @@ class Menu
     last_station = choose_station
     route = Route.new(first_station, last_station)
     self.routes.push(route)
+    route
+  end
+
+  def create_passenger_wagon
+    puts ''
+    print 'Задайте количество мест в вагоне: '
+    seats = gets.chomp
+    number = rand(100)
+    wagon = PassengerWagon.new(number, seats)
+    wagon
+  rescue RuntimeError => e
+    puts 'Данные заданы в неверном формате:'
+    puts e.message
+    print 'Хотите попробовать еще раз? (да/нет) '
+    retry if gets.chomp == 'да'
+  end
+
+  def create_cargo_wagon
+    puts ''
+    print 'Задайте объем вагона: '
+    volume = gets.chomp
+    number = rand(100)
+    wagon = CargoWagon.new(number, volume)
+    wagon
+  rescue RuntimeError => e
+    puts 'Данные заданы в неверном формате:'
+    puts e.message
+    print 'Хотите попробовать еще раз? (да/нет) '
+    retry if gets.chomp == 'да'
   end
 
   def add_station_to_route
@@ -199,7 +242,7 @@ class Menu
     end
     puts 'Выберите поезд'
     train = choose_train
-    wagon = train.class == 'PassengerTrain' ? PassengerWagon.new : CargoWagon.new
+    wagon = train.class == 'PassengerTrain' ? create_passenger_wagon : create_cargo_wagon
     train.hitch_wagon(wagon)
   end
 
@@ -234,6 +277,30 @@ class Menu
     end
   end
 
+  def take_seat
+    puts ''
+    if passenger_trains.empty?
+      puts 'Пассажирских поездов не создано'
+      return
+    end
+    puts 'Выберите поезд'
+    train = choose_from_array(passenger_trains)
+    if train.wagons.empty?
+      puts 'У поезда нет вагонов'
+      return
+    end
+    puts 'Выберите вагон'
+    wagon = choose_from_array(train.wagons)
+    if wagon.empty_seats > 0
+      wagon.take_seat
+      puts 'Место успешно занято'
+    else
+      puts 'Свободных мест нет'
+    end
+  end
+
+  
+
   def show_stations
     puts ''
     puts 'Не создано ни одной станции' if self.stations.empty?
@@ -252,11 +319,38 @@ class Menu
       puts 'На станции нет поездов'
       return
     end
-    station.trains_by_type(PassengerTrain).each do |train|
-      puts "Пассажирский поезд номер #{train.number}"
+    station.each_train do |train|
+      type = train.class == PassengerTrain ? 'пассажирский' : 'грузовой'
+      puts "Номер: #{train.number}, тип: #{type}, количество вагонов: #{train.wagons.length}"
     end
-    station.trains_by_type(CargoTrain).each do |train|
-      puts "Грузовой поезд номер #{train.number}"
+  end
+
+  def show_wagons
+    puts ''
+    if self.trains.empty?
+      puts 'Поездов нет'
+      return
+    end
+    train = choose_train
+    show_train_wagons(train)
+  end
+
+  def show_train_wagons(train)
+    puts ''
+    if train.wagons.empty?
+      puts 'Поезд без вагонов'
+      return
+    end
+    type = train.class == PassengerTrain ? 'пассажирский' : 'грузовой'
+    train.each_wagon do |wagon|
+      puts "Номер вагона: #{wagon.number}, тип: #{type}"
+      if type == 'пассажирский'
+        puts "Количество свободных мест: #{wagon.empty_seats}"
+        puts "Количество занятых мест: #{wagon.occupied_seats}"
+      else
+        puts "Количество свободного объема: #{wagon.free_space}"
+        puts "Количество занятого объема: #{wagon.occupied_space}"
+      end
     end
   end
 
