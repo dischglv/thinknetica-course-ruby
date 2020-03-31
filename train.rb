@@ -61,6 +61,12 @@ class Train
     end
   end
 
+  def each_wagon(&block)
+    if block_given?
+      self.wagons.each { |wagon| block.call(wagon) }
+    end
+  end
+
   protected
   # вынесли в protected (так как есть подклассы) все, что не входит в интерфейс класса
   # скорость, маршрут, текущий номер станции - внутренние переменные
