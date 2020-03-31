@@ -4,7 +4,7 @@ class PassengerWagon < Wagon
     attr_reader :seats, :empty_seats
 
     def initialize(number, seats)
-        @seats = seats
+        @seats = seats.to_i
         super(number)
         @empty_seats = seats
     end
@@ -23,6 +23,6 @@ class PassengerWagon < Wagon
     def validate!
         super
         raise "Количество мест должно быть не nil" if self.seats.nil?
-        raise "Количество мест должно быть неотрицательным числом" if self.seats < 0
+        raise "Количество мест должно быть положительным целым числом" unless self.seats > 0
     end
 end
