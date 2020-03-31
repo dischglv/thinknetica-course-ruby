@@ -84,6 +84,8 @@ class Menu
     puts 'Введите 4 чтобы прицепить вагон к поезду'
     puts 'Введите 5 чтобы отцепить вагон от поезда'
     puts 'Введите 6 чтобы переместить поезд'
+    puts 'Введите 7 чтобы занять место в пассажирском вагоне'
+    puts 'Введите 8 чтобы занять объем в грузовом вагоне'
     case gets.chomp
     when '1'
       add_station_to_route
@@ -97,6 +99,10 @@ class Menu
       uncouple_wagon_from_train
     when '6'
       move_train
+    when '7'
+      take_seat
+    when '8'
+      take_space
     else
       return
     end
@@ -299,7 +305,29 @@ class Menu
     end
   end
 
-  
+  def take_space
+    puts ''
+    if cargo_trains.empty?
+      puts 'Грузовых вагонов не создано'
+      return
+    end
+    puts 'Выберите поезд'
+    train = choose_from_array(cargo_trains)
+    if train.wagons.empty?
+      puts 'У поезда нет вагонов'
+      return
+    end
+    puts 'Выберите вагон'
+    wagon = choose_from_array(train.wagons)
+    if wagon.free_space > 0
+      puts "В вагоне осталось свободного места: #{wagon.empty_space}"
+      print 'Введите объем, который хотите занять: '
+      volume = gets.chomp.to_f
+      wagon.take_up_space(volume)
+    else
+      puts 'В вагоне не осталось свободного места'
+    end
+  end
 
   def show_stations
     puts ''
