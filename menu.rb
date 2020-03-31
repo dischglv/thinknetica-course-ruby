@@ -362,6 +362,7 @@ class Menu
     station.each_train do |train|
       type = train.class == PassengerTrain ? 'пассажирский' : 'грузовой'
       puts "Номер: #{train.number}, тип: #{type}, количество вагонов: #{train.wagons.length}"
+      show_train_wagons(train)
     end
   end
 
