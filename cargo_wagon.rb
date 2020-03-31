@@ -4,7 +4,7 @@ class CargoWagon < Wagon
     attr_reader :volume, :free_space
 
     def initialize(number, volume)
-        @volume = volume
+        @volume = volume.to_f
         super(number)
         @free_space = volume
     end
