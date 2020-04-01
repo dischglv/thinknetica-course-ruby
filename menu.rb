@@ -332,7 +332,7 @@ class Menu
     puts 'Выберите вагон'
     wagon = choose_from_array(train.wagons)
     if wagon.free_space > 0
-      puts "В вагоне осталось свободного места: #{wagon.empty_space}"
+      puts "В вагоне осталось свободного места: #{wagon.free_space}"
       print 'Введите объем, который хотите занять: '
       volume = gets.chomp.to_i
       wagon.take_up_space(volume)
