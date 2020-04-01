@@ -309,8 +309,8 @@ class Menu
     end
     puts 'Выберите вагон'
     wagon = choose_from_array(train.wagons)
-    if wagon.empty_seats > 0
-      wagon.take_seat
+    if wagon.free_space > 0
+      wagon.take_up_space
       puts 'Место успешно занято'
     else
       puts 'Свободных мест нет'
@@ -334,7 +334,7 @@ class Menu
     if wagon.free_space > 0
       puts "В вагоне осталось свободного места: #{wagon.empty_space}"
       print 'Введите объем, который хотите занять: '
-      volume = gets.chomp.to_f
+      volume = gets.chomp.to_i
       wagon.take_up_space(volume)
     else
       puts 'В вагоне не осталось свободного места'
@@ -386,8 +386,8 @@ class Menu
     train.each_wagon do |wagon|
       puts "Номер вагона: #{wagon.number}, тип: #{type}"
       if type == 'пассажирский'
-        puts "Количество свободных мест: #{wagon.empty_seats}"
-        puts "Количество занятых мест: #{wagon.occupied_seats}"
+        puts "Количество свободных мест: #{wagon.free_space}"
+        puts "Количество занятых мест: #{wagon.occupied_space}"
       else
         puts "Количество свободного объема: #{wagon.free_space}"
         puts "Количество занятого объема: #{wagon.occupied_space}"
