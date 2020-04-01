@@ -63,7 +63,7 @@ class Train
 
   def each_wagon(&block)
     if block_given?
-      self.wagons.each { |wagon| block.call(wagon) }
+      self.wagons.each { |wagon| yield(wagon) }
     end
   end
   

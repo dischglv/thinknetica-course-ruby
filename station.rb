@@ -35,7 +35,7 @@ class Station
 
   def each_train(&block)
     if block_given?
-      self.trains.each { |train| block.call(train) }
+      self.trains.each { |train| yield(train) }
     end
   end
 
