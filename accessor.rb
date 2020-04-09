@@ -10,12 +10,9 @@ module Accessor
 
       define_method("#{name}=".to_sym) do |value|
         values = instance_variable_get(var_values)
-        if values
-          values << value
-          instance_variable_set(var_values, values)
-        else
-          instance_variable_set(var_values, [value])
-        end
+        values ||= []
+        values << value
+        instance_variable_set(var_values, values)
         instance_variable_set(var_name, value)
       end
 
