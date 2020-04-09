@@ -33,6 +33,12 @@ class Station
     self.trains.count { |train| train.class == type }
   end
 
+  def each_train(&block)
+    if block_given?
+      self.trains.each { |train| yield(train) }
+    end
+  end
+
   protected
   # извне можем только получать массив поездов, находящихся на станции, записываем в массив явно только внутри класса
   # для добавления/удаления поездов на станцию существуют отдельные методы 

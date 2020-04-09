@@ -61,6 +61,16 @@ class Train
     end
   end
 
+  def each_wagon(&block)
+    if block_given?
+      self.wagons.each { |wagon| yield(wagon) }
+    end
+  end
+  
+  def train_stopped?
+    self.speed.zero?
+  end
+
   protected
   # вынесли в protected (так как есть подклассы) все, что не входит в интерфейс класса
   # скорость, маршрут, текущий номер станции - внутренние переменные
@@ -79,10 +89,6 @@ class Train
 
   def next_station
     self.route.at(self.current_station_number + 1) unless current_station == self.route.last_station
-  end
-
-  def train_stopped?
-    self.speed.zero?
   end
 
   def stop
