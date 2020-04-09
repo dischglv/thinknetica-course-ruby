@@ -25,4 +25,16 @@ module Accessor
       end
     end
   end
+
+  def strong_attr_accessor(name, var_class)
+    var_name = "@#{name}".to_sym
+    define_method(name) do
+      instance_variable_get(var_name)
+    end
+
+    define_method("#{name}=".to_sym) do |value|
+      raise 'Не совпадает тип переменной' unless value.is_a? var_class
+      instance_variable_set(var_name, value)
+    end
+  end
 end
