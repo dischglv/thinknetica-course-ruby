@@ -2,12 +2,14 @@ class Train
   include Manufactured
   include InstanceCounter
   include Validation
+  extend Accessor
   INITIAL_SPEED = 0
   NUMBER_FORMAT = /^([a-zа-я]|\d){3}-?([a-zа-я]|\d){2}$/i
 
   @@trains = {}
 
   attr_reader :length, :number, :type, :wagons
+  validate :number, NUMBER_FORMAT
 
   def self.find(number)
     @@trains[number]
@@ -89,7 +91,7 @@ class Train
     self.speed = 0
   end
 
-  def validate!
-    raise "Невалидный формат номера" if number !~ NUMBER_FORMAT
-  end
+  # def validate!
+  #   raise "Невалидный формат номера" if number !~ NUMBER_FORMAT
+  # end
 end

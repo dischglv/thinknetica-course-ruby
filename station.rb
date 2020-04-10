@@ -3,6 +3,7 @@ class Station
   include Validation
 
   attr_reader :name, :trains
+  validate :name, :presence
   @@stations = []
 
   def self.all
@@ -37,8 +38,4 @@ class Station
   # извне можем только получать массив поездов, находящихся на станции, записываем в массив явно только внутри класса
   # для добавления/удаления поездов на станцию существуют отдельные методы 
   attr_writer :trains
-
-  def validate!
-    raise "Имя не может быть пустым" if self.name == ""
-  end
 end

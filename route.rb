@@ -3,6 +3,7 @@ class Route
   include Validation
 
   attr_reader :stations
+  validate :stations, :type, Station 
 
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
@@ -48,9 +49,7 @@ class Route
   attr_writer :stations
 
   def validate!
-    self.stations.each do |station|
-      raise "Cтанции должны быть объектом класса Station" unless station.is_a? Station
-    end
+    Validation::validate!
     raise "Конечная и начальная станция не могут совпадать" if first_station == last_station
   end
 end
