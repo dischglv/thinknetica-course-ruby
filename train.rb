@@ -2,7 +2,7 @@ class Train
   include Manufactured
   include InstanceCounter
   include Validation
-  extend Accessor
+
   INITIAL_SPEED = 0
   NUMBER_FORMAT = /^([a-zа-я]|\d){3}-?([a-zа-я]|\d){2}$/i
 
