@@ -3,7 +3,7 @@ class Route
   include Validation
 
   attr_reader :stations
-  validate :stations, :type, Station 
+  validate :stations, :type, Station
 
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
@@ -47,9 +47,4 @@ class Route
   # изменение массива станций должно быть доступно только изнутри класса
   # для изменения массива станций извне существуют отдельные методы из интерфейса класса
   attr_writer :stations
-
-  def validate!
-    Validation::validate!
-    raise "Конечная и начальная станция не могут совпадать" if first_station == last_station
-  end
 end
