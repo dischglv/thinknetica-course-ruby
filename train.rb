@@ -90,8 +90,4 @@ class Train
   def stop
     self.speed = 0
   end
-
-  # def validate!
-  #   raise "Невалидный формат номера" if number !~ NUMBER_FORMAT
-  # end
 end
